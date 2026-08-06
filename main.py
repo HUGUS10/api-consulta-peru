@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 
 app = FastAPI()
 
-# Permitir solicitudes desde tu frontend (POS)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -36,13 +35,11 @@ def consultar_ruc(ruc: str):
 
         soup = BeautifulSoup(response.text, 'html.parser')
         
-        # Extraer Nombre o Razón Social
         h4_tags = soup.find_all('h4')
         razon_social = ""
         for tag in h4_tags:
             text = tag.text.strip()
             if ruc in text:
-                # El formato de respuesta suele ser: "20100070970 - SUPERMERCADOS PERUANOS S.A."
                 parts = text.split('-', 1)
                 if len(parts) > 1:
                     razon_social = parts[1].strip()
