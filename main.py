@@ -86,16 +86,14 @@ def consultar_ruc(ruc: str):
             estado = data.get("estado", "").strip()
             condicion = data.get("condicion", "").strip()
 
-            return {
-                "success": True,
-                "ruc": ruc,
-                "razon_social": razon_social,
-                "direccion": direccion if direccion else "SIN DIRECCIÓN REGISTRADA",
-                "estado": estado,
-                "condicion": condicion
-            }
+        return {
+            "success": True,
+            "ruc": ruc,
+            "razon_social": razon_social
+        }
 
-        raise HTTPException(status_code=404, detail="RUC no encontrado o servicio de SUNAT no disponible.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
     except requests.exceptions.RequestException as e:
         raise HTTPException(status_code=500, detail=f"Error de conexión con el servicio RUC: {str(e)}")
